@@ -16,12 +16,38 @@ function Weather(props) {
                 credentials: "include"
             }).then(val => val.json());
             setWeatherRes(resp.current);
+            return resp.current;
         } catch (error) {
             console.log(error);
         }
     }
 
-    if (weatherRes == null) fetchWeather();
+    async function postWeather(data) {
+        try {
+            console.log(weatherRes);
+            
+            fetch("http://localhost:5000/api",{
+                method: "POST",
+                headers:{
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    create_at: time,
+                    position:{
+                        latitude: props.latitude,
+                        longitude: props.longitude
+                    },
+                    weather: data,
+                })
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    if (weatherRes == null) {
+        fetchWeather().then((data) => {postWeather(data)});
+    }
     
     return (
         <div>

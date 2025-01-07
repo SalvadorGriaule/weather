@@ -1,9 +1,15 @@
-import logo from './logo.svg';
-import DisplayGeoLoc  from './asset/Componants/geolocalisation';
+import DisplayGeoLoc from './asset/Componants/geolocalisation';
 import './App.css';
+import { useEffect, useState } from 'react';
 
 function App() {
-  
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    fetch('http://localhost:5000')
+    .then(response => response.text())
+    .then(data => setMessage(data));
+  })
 
   return (
     <div className="App">
@@ -13,6 +19,9 @@ function App() {
       <main>
         <section>
           <DisplayGeoLoc />
+        </section>
+        <section>
+        <p>{message}</p>
         </section>
       </main>
     </div>
