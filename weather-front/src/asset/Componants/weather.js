@@ -23,9 +23,7 @@ function Weather(props) {
     }
 
     async function postWeather(data) {
-        try {
-            console.log(weatherRes);
-            
+        try { 
             fetch("http://localhost:5000/api",{
                 method: "POST",
                 headers:{
