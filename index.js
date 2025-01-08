@@ -1,22 +1,14 @@
 const express = require("express");
 const cors = require("cors");
-// const duckdb = require("duckdb-async");
 const syncdb = require("duckdb");
-const send = require("send");
 const app = express();
 
 // duckdb part
 
-//const dbInit = async () => { db = await duckdb.Database.create("database.duckdb", duckdb.OPEN_READWRITE); return db };
 const dbSync = new syncdb.Database("database.duckdb")
 const conSyn = dbSync.connect();
 let dbd;
 let con;
-
-// const initDB = async () => {
-//     dbd = await dbInit();
-//     con = await dbd.connect();
-// }
 
 // app exec
 
@@ -25,6 +17,24 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //initDB();
+
+conSyn.all('SHOW TABLES', (err , result) => {
+    if (err) {
+        console.warn(err);
+    } else {
+        if (result.length == 0 ){
+            conSyn.all('CREATE SEQUENCE data_id_ai',(err, result) => {
+                if(err) {
+                    console.warn(err);
+                } else {
+                    conSyn.all('CREATE TABLE Weather (id INTEGER PRIMARY KEY, position JSON, weather JSON, time STRING)',(err,result) => {
+                        if (err) console.warn(err);
+                    })
+                }
+            })
+        }
+    }
+})
 
 app.get("/", (req, res) => {
     res.send("Hello");
@@ -35,7 +45,6 @@ app.get('/history', (req, res) => {
         if (err) {
             console.warn(err);
         } else {
-            console.log(result);
             res.send(result);
         }
     })

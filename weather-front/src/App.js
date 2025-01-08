@@ -1,11 +1,10 @@
 import DisplayGeoLoc from './asset/Componants/geolocalisation';
 import DisplayHistory from './asset/Componants/history';
-import './App.css';
-import { useEffect, useRef, useState } from 'react';
+import DisplayHoroscope from './asset/Componants/horoscope';
+import './output.css';
 
 function App() {
-  const [message, setMessage] = useState('');
-
+  
   function pageSet(name) {
     let pageAll = document.querySelectorAll(".page")
 
@@ -22,6 +21,7 @@ function App() {
           <ul className='flex space-x-2 items-center'>
             <li onClick={() => pageSet("home")}>Météo actuelle</li>
             <li onClick={() => pageSet("history")}>Historique</li>
+            <li onClick={() => pageSet("horoscope")}>horoscope</li>
           </ul>
         </nav>
       </header>
@@ -31,6 +31,9 @@ function App() {
         </section>
         <section id='history' className='hidden page'>
             <DisplayHistory />
+        </section>
+        <section id='horoscope' className='hidden page'>
+            <DisplayHoroscope />
         </section>
       </main>
     </div>
